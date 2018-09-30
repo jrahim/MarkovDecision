@@ -11,13 +11,14 @@ Samplingtree::Samplingtree(int n, float* inprobs) {
     for (int i = 0; i < n; i++) {
         probs[i]->setProbability(inprobs[i]);
     }
+    makeTree(inprobs);
 }
 
 void Samplingtree::makeTree(float* inprobs) {
     SamplingTreeNode** currentlayer = probs;
     SamplingTreeNode** nextlayer = nullptr;
-    for (int i = log2(numProbs); i >= 0; i--) {
-        nextlayer = ( (i >= 0) ? new SamplingTreeNode[pow(2, i-1)] : nullptr );
+    for (int i = log2(numProbs); i > 0; i--) {
+        nextlayer = new SamplingTreeNode*[pow(2, i-1)];
         for (int j = 0; j < (pow(2, i)); j++) {
             auto* newNode = new SamplingTreeNode;
             newNode->setLeftChild(currentlayer[j]);
@@ -28,6 +29,13 @@ void Samplingtree::makeTree(float* inprobs) {
             nextlayer[j/2] = newNode;
             j++;
         }
-        curren
+        if (i != log2(numProbs)) {
+            delete [] currentlayer;
+        }
+        currentlayer = nextlayer;
+        if (i==1) {
+            root = nextlayer[0];
+        }
+        delete [] nextlayer;
     }
 }
