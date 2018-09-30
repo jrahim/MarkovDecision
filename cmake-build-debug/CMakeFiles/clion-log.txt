@@ -1,5 +1,0 @@
-"D:\Installed Programs\CLion 2018.2.4\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - NMake Makefiles" D:\MarkovDecision
--- Configuring done
-Warning: Source file "D:/MarkovDecision/cmake-build-debug/Samplingtree.cpp" is listed multiple times for target "MarkovDecision".
--- Generating done
--- Build files have been written to: D:/MarkovDecision/cmake-build-debug
