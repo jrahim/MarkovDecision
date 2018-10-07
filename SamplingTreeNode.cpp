@@ -24,12 +24,12 @@ double SamplingTreeNode::getProbability() {
     return probability;
 }
 
-SamplingTreeNode* SamplingTreeNode::getLeftChild(SamplingTreeNode* node) {
-    return node->leftChild;
+SamplingTreeNode* SamplingTreeNode::getLeftChild() {
+    return leftChild;
 }
 
-SamplingTreeNode* SamplingTreeNode::getRightChild(SamplingTreeNode* node) {
-    return node->rightChild;
+SamplingTreeNode* SamplingTreeNode::getRightChild() {
+    return rightChild;
 }
 
 SamplingTreeNode* SamplingTreeNode::getParent() {
@@ -38,4 +38,12 @@ SamplingTreeNode* SamplingTreeNode::getParent() {
 
 void SamplingTreeNode::recalculateProbability() {
     probability = leftChild->getProbability() + rightChild->getProbability();
+}
+
+void SamplingTreeNode::setIndex(int i) {
+    index = i;
+}
+
+int SamplingTreeNode::getIndex() {
+    return index;
 }

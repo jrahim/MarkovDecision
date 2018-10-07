@@ -5,6 +5,8 @@
 #include <math.h>
 #include "Samplingtree.h"
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 Samplingtree::Samplingtree(int n, double* inprobs) {
     int n2 = pow(2, ceil(log2(n)));
@@ -15,6 +17,7 @@ Samplingtree::Samplingtree(int n, double* inprobs) {
         if (i < n) {
             probs[i]->setProbability(inprobs[i]);
         }
+        probs[i]->setIndex(i);
     }
     makeTree();
 }
@@ -47,11 +50,11 @@ void Samplingtree::makeTree() {
 
 void Samplingtree::traversePostOrderHelper(SamplingTreeNode* node) {
     // first recur on left subtree
-    if (node->getLeftChild(node) != nullptr) {
-        traversePostOrderHelper(node->getLeftChild(node));
+    if (node->getLeftChild() != nullptr) {
+        traversePostOrderHelper(node->getLeftChild());
 
         // then recur on right subtree
-        traversePostOrderHelper(node->getRightChild(node));
+        traversePostOrderHelper(node->getRightChild());
     }
 
     // now deal with the node
@@ -71,3 +74,36 @@ void Samplingtree::updateProb(int index, double newprob) {
         node->recalculateProbability();
     }
 }
+
+void Samplingtree::deleteTreeHelper(SamplingTreeNode* node) {
+    // first recur on left subtree
+    if (node->getLeftChild() != nullptr) {
+        traversePostOrderHelper(node->getLeftChild());
+
+        // then recur on right subtree
+        traversePostOrderHelper(node->getRightChild());
+    }
+
+    // now deal with the node
+    delete node;
+}
+
+void Samplingtree::deleteTree() {
+    deleteTreeHelper(root);
+}
+
+int Samplingtree::performSampling() {
+    SamplingTreeNode* node = root;
+    while (node->getLeftChild() != nullptr) {
+        SamplingTreeNode* leftChild = node->getLeftChild();
+        double prob = leftChild->getProbability() / node->getProbability();
+        double rndnum = (double) rand() / RAND_MAX;
+        if (rndnum < prob) {
+            node = leftChild;
+        } else {
+            node = node->getRightChild();
+        }
+    }
+    return node->getIndex();
+}
+

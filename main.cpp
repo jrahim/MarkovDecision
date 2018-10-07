@@ -6,9 +6,12 @@
 #include "Samplingtree.h"
 #include "SamplingTreeNode.h"
 #include <math.h>
+#include <cstdlib>
+#include <ctime>
 using namespace std;
 
 int main () {
+    srand(time(0));
     int n = 3;
     double* probs = new double[n];
     probs[0] = 0.1;
@@ -18,5 +21,10 @@ int main () {
     stree.traversePostOrder();
     stree.updateProb(2, 0.5);
     stree.traversePostOrder();
+    cout << stree.performSampling() << endl;
+    cout << stree.performSampling() << endl;
+    cout << stree.performSampling() << endl;
+    cout << stree.performSampling() << endl;
+    cout << stree.performSampling() << endl;
     return 0;
 }

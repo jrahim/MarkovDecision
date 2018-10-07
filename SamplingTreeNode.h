@@ -12,16 +12,19 @@ private:
     SamplingTreeNode* rightChild = nullptr;
     SamplingTreeNode* parent = nullptr;
     double probability = 0.0;
+    int index = -1;
 public:
     void setLeftChild(SamplingTreeNode* lc);
     void setRightChild(SamplingTreeNode* rc);
-    SamplingTreeNode* getLeftChild(SamplingTreeNode* node);
-    SamplingTreeNode* getRightChild(SamplingTreeNode* node);
+    SamplingTreeNode* getLeftChild();
+    SamplingTreeNode* getRightChild();
     void setProbability(double prob);
     void setParent(SamplingTreeNode* p);
     SamplingTreeNode* getParent();
     void recalculateProbability();
     double getProbability();
+    void setIndex(int i);
+    int getIndex();
 };
 
 

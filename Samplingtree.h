@@ -17,10 +17,13 @@ private:
     SamplingTreeNode* root;
     void makeTree();
     void traversePostOrderHelper(SamplingTreeNode* node);
+    void deleteTreeHelper(SamplingTreeNode* node);
 public:
     Samplingtree(int n, double* inprobs);
     void updateProb(int index, double newprob);
     void traversePostOrder();
+    void deleteTree();
+    int performSampling();
 };
 
 
