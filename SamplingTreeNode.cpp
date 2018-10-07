@@ -4,7 +4,7 @@
 
 #include "SamplingTreeNode.h"
 
-void SamplingTreeNode::setProbability(float prob) {
+void SamplingTreeNode::setProbability(double prob) {
     probability = prob;
 }
 
@@ -20,7 +20,7 @@ void SamplingTreeNode::setParent(SamplingTreeNode *p) {
     parent = p;
 }
 
-float SamplingTreeNode::getProbability() {
+double SamplingTreeNode::getProbability() {
     return probability;
 }
 
@@ -30,4 +30,12 @@ SamplingTreeNode* SamplingTreeNode::getLeftChild(SamplingTreeNode* node) {
 
 SamplingTreeNode* SamplingTreeNode::getRightChild(SamplingTreeNode* node) {
     return node->rightChild;
+}
+
+SamplingTreeNode* SamplingTreeNode::getParent() {
+    return parent;
+}
+
+void SamplingTreeNode::recalculateProbability() {
+    probability = leftChild->getProbability() + rightChild->getProbability();
 }

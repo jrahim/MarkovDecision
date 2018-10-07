@@ -6,7 +6,7 @@
 #include "Samplingtree.h"
 #include <iostream>
 
-Samplingtree::Samplingtree(int n, float* inprobs) {
+Samplingtree::Samplingtree(int n, double* inprobs) {
     int n2 = pow(2, ceil(log2(n)));
     numProbs = n2;
     probs = new SamplingTreeNode*[n2];
@@ -60,4 +60,14 @@ void Samplingtree::traversePostOrderHelper(SamplingTreeNode* node) {
 
 void Samplingtree::traversePostOrder() {
     traversePostOrderHelper(root);
+    cout << endl;
+}
+
+void Samplingtree::updateProb(int index, double newprob) {
+    SamplingTreeNode* node = probs[index];
+    node->setProbability(newprob);
+    while (node->getParent() != nullptr) {
+        node = node->getParent();
+        node->recalculateProbability();
+    }
 }
