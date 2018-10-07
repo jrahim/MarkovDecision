@@ -15,6 +15,8 @@ private:
 public:
     void setLeftChild(SamplingTreeNode* lc);
     void setRightChild(SamplingTreeNode* rc);
+    SamplingTreeNode* getLeftChild(SamplingTreeNode* node);
+    SamplingTreeNode* getRightChild(SamplingTreeNode* node);
     void setProbability(float prob);
     void setParent(SamplingTreeNode* p);
     float getProbability();

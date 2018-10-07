@@ -4,21 +4,25 @@
 
 #include <math.h>
 #include "Samplingtree.h"
+#include <iostream>
 
 Samplingtree::Samplingtree(int n, float* inprobs) {
     numProbs = n;
-    probs = new SamplingTreeNode*[10];
+    probs = new SamplingTreeNode*[n];
     for (int i = 0; i < n; i++) {
+        probs[i] = new SamplingTreeNode;
         probs[i]->setProbability(inprobs[i]);
     }
+    makeTree();
 }
 
-void Samplingtree::makeTree(float* inprobs) {
+void Samplingtree::makeTree() {
     SamplingTreeNode** currentlayer = probs;
     SamplingTreeNode** nextlayer = nullptr;
-    for (int i = log2(numProbs); i >= 0; i--) {
-        nextlayer = ( (i >= 0) ? new SamplingTreeNode[pow(2, i-1)] : nullptr );
-        for (int j = 0; j < (pow(2, i)); j++) {
+    for (int i = log2(numProbs); i > 0; i--) {
+        nextlayer = new SamplingTreeNode*[pow(2, i-1)];
+        int j = 0;
+        while (j < (pow(2, i))) {
             auto* newNode = new SamplingTreeNode;
             newNode->setLeftChild(currentlayer[j]);
             newNode->setRightChild(currentlayer[j+1]);
@@ -26,8 +30,31 @@ void Samplingtree::makeTree(float* inprobs) {
             currentlayer[j]->setParent(newNode);
             currentlayer[j+1]->setParent(newNode);
             nextlayer[j/2] = newNode;
-            j++;
+            j += 2;
         }
-        curren
+        if (i != log2(numProbs)) {
+            delete [] currentlayer;
+        }
+        currentlayer = nextlayer;
+        if (i==1) {
+            root = nextlayer[0];
+        }
     }
+}
+
+void Samplingtree::traversePostOrderHelper(SamplingTreeNode* node) {
+    // first recur on left subtree
+    if (node->getLeftChild(node) != nullptr) {
+        traversePostOrderHelper(node->getLeftChild(node));
+
+        // then recur on right subtree
+        traversePostOrderHelper(node->getRightChild(node));
+    }
+
+    // now deal with the node
+    cout << node->getProbability() << " ";
+}
+
+void Samplingtree::traversePostOrder() {
+    traversePostOrderHelper(root);
 }

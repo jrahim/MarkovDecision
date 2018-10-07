@@ -23,3 +23,11 @@ void SamplingTreeNode::setParent(SamplingTreeNode *p) {
 float SamplingTreeNode::getProbability() {
     return probability;
 }
+
+SamplingTreeNode* SamplingTreeNode::getLeftChild(SamplingTreeNode* node) {
+    return node->leftChild;
+}
+
+SamplingTreeNode* SamplingTreeNode::getRightChild(SamplingTreeNode* node) {
+    return node->rightChild;
+}
