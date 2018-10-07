@@ -7,11 +7,14 @@
 #include <iostream>
 
 Samplingtree::Samplingtree(int n, float* inprobs) {
-    numProbs = n;
-    probs = new SamplingTreeNode*[n];
-    for (int i = 0; i < n; i++) {
+    int n2 = pow(2, ceil(log2(n)));
+    numProbs = n2;
+    probs = new SamplingTreeNode*[n2];
+    for (int i = 0; i < n2; i++) {
         probs[i] = new SamplingTreeNode;
-        probs[i]->setProbability(inprobs[i]);
+        if (i < n) {
+            probs[i]->setProbability(inprobs[i]);
+        }
     }
     makeTree();
 }
