@@ -58,7 +58,7 @@ void Samplingtree::traversePostOrderHelper(SamplingTreeNode* node) {
     }
 
     // now deal with the node
-    cout << node->getProbability() << " ";
+    //cout << node->getProbability() << " "; commented by saad 10/10/18 (so that it doesnt print while deleting)
 }
 
 void Samplingtree::traversePostOrder() {

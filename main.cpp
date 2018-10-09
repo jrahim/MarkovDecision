@@ -17,15 +17,15 @@ int main() {
     srand(time(0));
 
     //line 1
-    int n=4; //no. of States. |S| = n
-    int m=3; //no. of Actions. |A| = m
+    int n=10; //no. of States. |S| = n
+    int m=5; //no. of Actions. |A| = m
     Inputs inp = initialize(n,m);
 
     double * q = new double[n];
     for(int i=0; i<n; i++) q[i] = 1.0/n;
 
     double Theta = 1 - inp.y;
-    int T = 5;
+    int T = 100;
 
     //line 2
     double * v = new double[n];   // v is a column matrix i think
@@ -58,9 +58,9 @@ int main() {
     }
 
 
-
+    double *** PiT = new double**[T];
     //line 6
-    for(int t=1; t<=T; t++){
+    for(int t=0; t<T; t++){
         //line 7
         //sample i with probability ((1-Theta)*Epsilon i + Theta*(q i))
         double * iProb = new double[n];
@@ -98,9 +98,24 @@ int main() {
 
         //line 11
         Epsilon[stateI] = Epsilon[stateI] + Epsilon[stateI]*PiI[stateI][actionA]*(exp(delta)-1);
-        //Epsilon = Epsilon/||Epsilon||1
+        //ask if correct
+        double sum =0;
+        for(int i=0; i<n; i++)sum += std::abs(Epsilon[i]);
+        for(int i=0; i<n; i++) Epsilon[i] = Epsilon[i]/sum;
+
         PiI[stateI][actionA] = PiI[stateI][actionA]*(exp(delta));
-        //PiI[stateI] = PiI[stateI]/||PiI[stateI]||1
+        //ask if correct
+        sum =0;
+        for(int a=0; a<n; a++) sum += std::abs(PiI[stateI][a]);
+        for(int a=0; a<m; a++) PiI[stateI][a] = PiI[stateI][a]/sum;
+
+        PiT[t] = new double*[n];
+        for(int i=0; i<n; i++) {
+            PiT[t][i] = new double[m]; //till what the code says
+            for(int a=0; a<m; a++) PiT[t][i][a] = 0.0; //what i added
+        }
+
+        for(int a=0; a<m; a++)  PiT[t][stateI][a] = PiI[stateI][a];
 
 
         //freeing up space
@@ -122,11 +137,25 @@ int main() {
 
 
     //line 13! Output!!
-    double * PiHatI = new double[n];
+    double ** PiHat = new double*[n];
     for(int i=0; i<n; i++){
-        PiHatI[i] = 1.0; //not complete
+        PiHat[i]= new double[m];
+        for(int a=0; a<m; a++){
+            double sum = 0.0;
+            for(int t=0; t<T; t++){
+                sum += PiT[t][i][a];
+            }
+            PiHat[i][a] = sum/T;
+        }
     }
 
+    for(int i=0; i<n; i++){
+        std::cout<<"i: "<<i<<'\n';
+        for(int a=0; a<m; a++){
+            std::cout<<PiHat[i][a]<<" ";
+        }
+        std::cout<<"\n";
+    }
 
     // Freeing up space
     //line 1
@@ -165,5 +194,16 @@ int main() {
     }
     delete []P;
 
+    //line 11 (PiT)
+    for(int t=0; t<T; t++){
+        for(int i=0; i<n; i++) delete []PiT[t][i];
+        delete []PiT[t];
+    }
+    delete []PiT;
+
+
+    //line 13 (piHat)
+    for(int i=0; i<n; i++) delete []PiHat[i];
+    delete []PiHat;
     return 0;
 }
