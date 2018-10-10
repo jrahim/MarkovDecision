@@ -112,7 +112,7 @@ int main() {
         PiT[t] = new double*[n];
         for(int i=0; i<n; i++) {
             PiT[t][i] = new double[m]; //till what the code says
-            for(int a=0; a<m; a++) PiT[t][i][a] = 0.0; //what i added
+            for(int a=0; a<m; a++) PiT[t][i][a] = 1.0/m;
         }
 
         for(int a=0; a<m; a++)  PiT[t][stateI][a] = PiI[stateI][a];
