@@ -53,7 +53,15 @@ void Algorithm1::initializeAlgorithm(int n, int m, Inputs inp, int T){
     }
 
     PiT = new double**[T];
+    iProb = new double[n];
+    for(int i=0; i<n; i++) iProb[i] = (1-Theta)*Epsilon[i] + Theta*q[i];
+    iSample = new Samplingtree(n, iProb);
 
+    aSample = new Samplingtree*[n];
+    for(int i=0; i<n; i++){
+        aSample[i] = new Samplingtree(m, PiI[i]);
+    }
+    deltaI = new bool[n]();
 }
 
 void Algorithm1::run() {
@@ -61,25 +69,23 @@ void Algorithm1::run() {
     for(int t=0; t<Time; t++){
         //line 7
         //sample i with probability ((1-Theta)*Epsilon i + Theta*(q i))
-        double * iProb = new double[noOfStates];
         for(int i=0; i<noOfStates; i++) iProb[i] = (1-Theta)*Epsilon[i] + Theta*q[i];
 
-        Samplingtree *iSample = new Samplingtree(noOfStates, iProb);
+        //iSample->updateProb(iProb);
         int stateI = iSample->performSampling();
 
 
         //line 8
         //sample a with probability PiI i, a
-        double * aProb = new double[noOfActions];
-        for(int a=0; a<noOfActions; a++) aProb[a] = PiI[stateI][a];
-        Samplingtree * aTree = new Samplingtree(noOfActions, aProb);
-        int actionA = aTree->performSampling();
-
+        if(deltaI[stateI]==1) {
+            //aSample[stateI]->updateProb(PiI[stateI]);
+            deltaI[stateI]=0;
+        }
+        int actionA = aSample[stateI]->performSampling();
 
         //line 9
         //conditioned on (i,a) sample j with probability p i,j(a)
-        Samplingtree *jTree = new Samplingtree(noOfStates, inputs.P[stateI][actionA]);
-        int stateJ = jTree->performSampling();
+        int stateJ = P[stateI][actionA]->performSampling();
 
 
         //line 10
@@ -107,6 +113,8 @@ void Algorithm1::run() {
         for(int a=0; a<noOfStates; a++) sum += std::abs(PiI[stateI][a]);
         for(int a=0; a<noOfActions; a++) PiI[stateI][a] = PiI[stateI][a]/sum;
 
+        deltaI[stateI] = 1;
+
         PiT[t] = new double*[noOfStates];
         for(int i=0; i<noOfStates; i++) {
             PiT[t][i] = new double[noOfActions]; //till what the code says
@@ -114,22 +122,6 @@ void Algorithm1::run() {
         }
 
         for(int a=0; a<noOfActions; a++)  PiT[t][stateI][a] = PiI[stateI][a];
-
-
-        //freeing up space
-        //line 7
-        delete []iProb;
-        iSample->deleteTree();
-        delete iSample;
-
-        //line 8
-        delete []aProb;
-        aTree->deleteTree();
-        delete aTree;
-
-        //line 9
-        jTree->deleteTree();
-        delete jTree;
     }
 }
 
@@ -156,6 +148,9 @@ void Algorithm1::outputPiHat() {
     }
 }
 
+void Algorithm1::outputV(){
+    for(int i=0; i<noOfStates; i++) std::cout<<v[i]<<" ";
+}
 void Algorithm1::clearData() {
 
     // Freeing up space
@@ -206,5 +201,16 @@ void Algorithm1::clearData() {
     //line 13 (piHat)
     for(int i=0; i<noOfStates; i++) delete []PiHat[i];
     delete []PiHat;
+
+
+    //line 7
+    delete []iProb;
+    iSample->deleteTree();
+    delete iSample;
+
+    //line 8
+    for(int i=0; i<noOfStates; i++) aSample[i]->deleteTree();
+    delete []aSample;
+    delete aSample;
 }
 

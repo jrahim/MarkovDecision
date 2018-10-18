@@ -23,6 +23,11 @@ private:
     double Beta, Alpha, M;
 
     Samplingtree *** P;
+    double *iProb;
+    Samplingtree * iSample;
+
+    Samplingtree ** aSample;
+    bool * deltaI;
 
     double *** PiT;
     double ** PiHat;
@@ -31,6 +36,7 @@ public:
 
     void initializeAlgorithm(int n, int m, Inputs inp, int T);
     void run();
+    void outputV();
     void outputPiHat();
     void clearData();
 
