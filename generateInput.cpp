@@ -14,12 +14,12 @@ struct Inputs{
 };
 
 
-Inputs initialize(int n, int m){
+static Inputs initialize(int n, int m, double y){
 	int * states = new int[n];
 	int * actions = new int[m];
 	double *** probs = new double**[n];
 	double *** rewards = new double**[n];
-	double gamma = 0.9;
+	double gamma = y;
 
 
 	//initializing states and actions

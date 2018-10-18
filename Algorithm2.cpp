@@ -4,7 +4,6 @@
 
 #include "Algorithm2.h"
 
-using namespace std;
 
 Algorithm2::Algorithm2(Inputs inp, int numStates, int numActions) {
     inputs = inp;
@@ -13,19 +12,20 @@ Algorithm2::Algorithm2(Inputs inp, int numStates, int numActions) {
 }
 
 void Algorithm2::runAlgorithm(int numIterations) {
-    v = new double[n];
-    double * Tv = new double[n];
+    v = new double[n]();
+    double * Tv;
     for (int iter = 0; iter < numIterations; iter++) {
+        Tv = new double[n];
         for (int i = 0; i < n; i++) {
             double Ti = 0.0;
             for (int a = 0; a < m; a++) {
                 double sum1 = 0.0;
                 double sum2 = 0.0;
                 for (int j = 0; j< n; j++) {
-                    sum1 += inputs.P[i][a][j] * v[j];
+                    sum1 += inputs.P[i][a][j] * v[j] * inputs.y;
                     sum2 += inputs.P[i][a][j] * inputs.R[i][a][j];
                 }
-                double total = inputs.y * sum1 + sum2;
+                double total = sum1 + sum2;
                 if (total > Ti) {
                     Ti = total;
                 }
@@ -35,12 +35,13 @@ void Algorithm2::runAlgorithm(int numIterations) {
         delete[] v;
         v = Tv;
     }
+
 }
 
 void Algorithm2::printV() {
-    cout << "[";
+    std::cout << "[";
     for (int i = 0; i < n; i++) {
-        cout << v[i] << ", " ;
+        std::cout << v[i] << ", " ;
     }
-    cout << "]" << endl;
+    std::cout << "]" << std::endl;
 }
