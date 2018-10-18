@@ -4,9 +4,7 @@
 
 #include <iostream>
 #include "generateInput.cpp"
-#include <cmath>
 #include "Samplingtree.h"
-#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include "Algorithm1.h"
@@ -18,6 +16,7 @@ int main() {
     int n = 10;
     int m = 10;
     double gamma = 0.5;
+    srand(time(0));
     Inputs inp = initialize(n, m, gamma);
 
     Algorithm1 *algo1 = new Algorithm1();

@@ -8,9 +8,6 @@
 
 void Algorithm1::initializeAlgorithm(int n, int m, Inputs inp, int T){
 
-    //for randomizing inputs
-    srand(time(0));
-
     //line 1
     noOfStates = n;
     noOfActions = m;
@@ -23,8 +20,7 @@ void Algorithm1::initializeAlgorithm(int n, int m, Inputs inp, int T){
     Time = T;
 
     //line 2
-    v = new double[n];   // v is a column matrix i think
-    for(int i=0; i<n; i++) v[i]=0;
+    v = new double[n]();
 
     //line 3
     Epsilon = new double[n];
@@ -38,8 +34,8 @@ void Algorithm1::initializeAlgorithm(int n, int m, Inputs inp, int T){
     }
 
     //line 4
-    Beta = (1-inp.y)*sqrt((log10(n*m + 1))/(2*n*m + T));
-    Alpha = (n / (2*pow(1-inp.y,2)));
+    Beta = (1-inp.y)*sqrt((log10(n*m + 1))/(2*n*m*T));
+    Alpha = (n / (2*pow(1-inp.y,2)))*Beta;
     M = (1.0/(1-inp.y));
 
     //line 5
@@ -71,15 +67,13 @@ void Algorithm1::run() {
         //sample i with probability ((1-Theta)*Epsilon i + Theta*(q i))
         for(int i=0; i<noOfStates; i++) iProb[i] = (1-Theta)*Epsilon[i] + Theta*q[i];
 
-`        for(int i=0; i<noOfStates; i++) iSample->updateProb(i, iProb[i]);
+        iSample->updateProb(iProb);
         int stateI = iSample->performSampling();
-
 
         //line 8
         //sample a with probability PiI i, a
         if(deltaI[stateI]==1) {
-            //aSample[stateI]->updateProb(PiI[stateI]);
-            for(int a=0; a<noOfActions; a++) aSample[stateI]->updateProb(a, PiI[stateI][a]);
+            aSample[stateI]->updateProb(PiI[stateI]);
             deltaI[stateI]=0;
         }
         int actionA = aSample[stateI]->performSampling();
@@ -88,30 +82,34 @@ void Algorithm1::run() {
         //conditioned on (i,a) sample j with probability p i,j(a)
         int stateJ = P[stateI][actionA]->performSampling();
 
+        std::cout<<"stateI: "<<stateI<<" stateJ: "<<stateJ;
 
         //line 10
         double delta = (inputs.y*v[stateJ] - v[stateI] + inputs.R[stateI][actionA][stateJ] - M);
         delta = delta/(((1-Theta)*Epsilon[stateI] + Theta*q[stateI])*PiI[stateI][actionA]);
         delta = delta*Beta;
 
-        double tempMin = std::min((v[stateI] - Alpha*((((1-inputs.y)*q[stateI])/((1-Theta)*Epsilon[stateI] + Theta*q[stateI]))-1)),(1/(1-inputs.y)));
+        double tempVal = ((1-inputs.y)*q[stateI]);
+        tempVal = tempVal / (((1-Theta)*Epsilon[stateI] + Theta*q[stateI]));
+        double tempMin = std::min((v[stateI] - Alpha*(tempVal-1)), M);
         v[stateI] = std::max(tempMin,0.0);
+        std::cout<<" tempMinI: "<<v[stateI];
 
-        tempMin = std::min((v[stateJ] - Alpha*inputs.y),(1/(1-inputs.y)));
+        tempMin = std::min((v[stateJ] - Alpha*inputs.y), M);
         v[stateJ] = std::max(tempMin, 0.0);
-
+        std::cout<<" tempMinJ: "<<v[stateJ]<<"\n";
 
         //line 11
         Epsilon[stateI] = Epsilon[stateI] + Epsilon[stateI]*PiI[stateI][actionA]*(exp(delta)-1);
         //ask if correct
         double sum =0;
-        for(int i=0; i<noOfStates; i++)sum += std::abs(Epsilon[i]);
+        for(int i=0; i<noOfStates; i++) sum += std::abs(Epsilon[i]);
         for(int i=0; i<noOfStates; i++) Epsilon[i] = Epsilon[i]/sum;
 
         PiI[stateI][actionA] = PiI[stateI][actionA]*(exp(delta));
         //ask if correct
         sum =0;
-        for(int a=0; a<noOfStates; a++) sum += std::abs(PiI[stateI][a]);
+        for(int a=0; a<noOfActions; a++) sum += std::abs(PiI[stateI][a]);
         for(int a=0; a<noOfActions; a++) PiI[stateI][a] = PiI[stateI][a]/sum;
 
         deltaI[stateI] = 1;
@@ -160,7 +158,6 @@ void Algorithm1::outputV(){
     std::cout<<"\n";
 }
 void Algorithm1::clearData() {
-
 
 
     delete []q;
