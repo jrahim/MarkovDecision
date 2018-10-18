@@ -5,11 +5,11 @@
 #include "Algorithm1.h"
 #include <iostream>
 #include <cmath>
+#include <algorithm>
 
 void Algorithm1::initializeAlgorithm(int n, int m, Inputs inp, int T){
 
     //for randomizing inputs
-    srand(time(0));
 
     //line 1
     noOfStates = n;
