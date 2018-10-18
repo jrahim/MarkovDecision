@@ -13,6 +13,7 @@ using namespace std;
 class Samplingtree {
 private:
     int numProbs;
+    int numOrgProbs;
     SamplingTreeNode** probs;
     SamplingTreeNode* root;
     void makeTree();

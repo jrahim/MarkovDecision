@@ -11,13 +11,14 @@
 Samplingtree::Samplingtree(int n, double* inprobs) {
     int n2 = pow(2, ceil(log2(n)));
     numProbs = n2;
+    numOrgProbs = n;
     probs = new SamplingTreeNode*[n2];
     for (int i = 0; i < n2; i++) {
         probs[i] = new SamplingTreeNode;
         if (i < n) {
             probs[i]->setProbability(inprobs[i]);
+            probs[i]->setIndex(i);
         }
-        probs[i]->setIndex(i);
     }
     makeTree();
 }
@@ -75,7 +76,7 @@ void Samplingtree::updateHelper(SamplingTreeNode *node) {
 }
 
 void Samplingtree::updateProb(double * newprob) {
-    for (int i = 0; i < numProbs; i++) {
+    for (int i = 0; i < numOrgProbs; i++) {
         probs[i]->setProbability(newprob[i]);
     }
     updateHelper(root);
