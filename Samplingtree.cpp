@@ -76,7 +76,7 @@ void Samplingtree::updateHelper(SamplingTreeNode *node) {
 }
 
 void Samplingtree::updateProb(double * newprob) {
-    for (int i = 0; i < numProbs; i++) {
+    for (int i = 0; i < numOrgProbs; i++) {
         probs[i]->setProbability(newprob[i]);
     }
     updateHelper(root);
