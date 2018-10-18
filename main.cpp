@@ -26,4 +26,3 @@ int main() {
     algo1->clearData();
     return 0;
 }
-

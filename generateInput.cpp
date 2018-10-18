@@ -1,5 +1,5 @@
-#ifndef GENERATE_INPUT
-#define GENERATE_INPUT
+#ifndef GENERATEINPUT_CPP
+#define GENERATEINPUT_CPP
 
 #include <iostream>
 #include <stdlib.h>
@@ -42,18 +42,16 @@ static Inputs initialize(int n, int m, double y){
 			for(int j=0; j<n; j++) probs[i][a][j] /= sum;
 		}
 	}
-
+	
 	Inputs in;
 	in.S = states;
 	in.A = actions;
 	in.P = probs;
 	in.R = rewards;
 	in.y = gamma;
-	return in;
+	return in; 
 
 }
-
-#endif
 
 /* for debugging purposes
 int main(){
@@ -106,4 +104,6 @@ int main(){
 	return 0;
 }
 */
+
+#endif //GENERATEINPUT_CPP
 
