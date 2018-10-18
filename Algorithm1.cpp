@@ -71,7 +71,7 @@ void Algorithm1::run() {
         //sample i with probability ((1-Theta)*Epsilon i + Theta*(q i))
         for(int i=0; i<noOfStates; i++) iProb[i] = (1-Theta)*Epsilon[i] + Theta*q[i];
 
-        //iSample->updateProb(iProb);
+`        for(int i=0; i<noOfStates; i++) iSample->updateProb(i, iProb[i]);
         int stateI = iSample->performSampling();
 
 
@@ -79,6 +79,7 @@ void Algorithm1::run() {
         //sample a with probability PiI i, a
         if(deltaI[stateI]==1) {
             //aSample[stateI]->updateProb(PiI[stateI]);
+            for(int a=0; a<noOfActions; a++) aSample[stateI]->updateProb(a, PiI[stateI][a]);
             deltaI[stateI]=0;
         }
         int actionA = aSample[stateI]->performSampling();
@@ -146,28 +147,21 @@ void Algorithm1::outputPiHat() {
         }
         std::cout<<"\n";
     }
+
+    //line 13 (piHat)
+    for(int i=0; i<noOfStates; i++) delete []PiHat[i];
+    delete []PiHat;
+
+
 }
 
 void Algorithm1::outputV(){
     for(int i=0; i<noOfStates; i++) std::cout<<v[i]<<" ";
+    std::cout<<"\n";
 }
 void Algorithm1::clearData() {
 
-    // Freeing up space
-    //line 1
-    for(int i=0; i<noOfStates; i++){
-        for(int a=0; a<noOfActions; a++){
-            delete []inputs.P[i][a];
-            delete []inputs.R[i][a];
-        }
-        delete []inputs.P[i];
-        delete []inputs.R[i];
-    }
-    delete []inputs.P;
-    delete []inputs.R;
 
-    delete []inputs.S;
-    delete []inputs.A;
 
     delete []q;
 
@@ -198,11 +192,6 @@ void Algorithm1::clearData() {
     delete []PiT;
 
 
-    //line 13 (piHat)
-    for(int i=0; i<noOfStates; i++) delete []PiHat[i];
-    delete []PiHat;
-
-
     //line 7
     delete []iProb;
     iSample->deleteTree();
@@ -211,6 +200,5 @@ void Algorithm1::clearData() {
     //line 8
     for(int i=0; i<noOfStates; i++) aSample[i]->deleteTree();
     delete []aSample;
-    delete aSample;
 }
 
