@@ -66,22 +66,27 @@ void Samplingtree::traversePostOrder() {
     cout << endl;
 }
 
-void Samplingtree::updateProb(int index, double newprob) {
-    SamplingTreeNode* node = probs[index];
-    node->setProbability(newprob);
-    while (node->getParent() != nullptr) {
-        node = node->getParent();
-        node->recalculateProbability();
+void Samplingtree::updateHelper(SamplingTreeNode *node) {
+    if (node->getLeftChild() != nullptr) {
+        traversePostOrderHelper(node->getLeftChild());
+        traversePostOrderHelper(node->getRightChild());
     }
+}
+
+void Samplingtree::updateProb(double * newprob) {
+    for (int i = 0; i < numProbs; i++) {
+        probs[i]->setProbability(newprob[i]);
+    }
+    updateHelper(root);
 }
 
 void Samplingtree::deleteTreeHelper(SamplingTreeNode* node) {
     // first recur on left subtree
     if (node->getLeftChild() != nullptr) {
-        traversePostOrderHelper(node->getLeftChild());
+        deleteTreeHelper(node->getLeftChild());
 
         // then recur on right subtree
-        traversePostOrderHelper(node->getRightChild());
+        deleteTreeHelper(node->getRightChild());
     }
 
     // now deal with the node

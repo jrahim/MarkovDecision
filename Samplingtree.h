@@ -18,9 +18,10 @@ private:
     void makeTree();
     void traversePostOrderHelper(SamplingTreeNode* node);
     void deleteTreeHelper(SamplingTreeNode* node);
+    void updateHelper(SamplingTreeNode* node);
 public:
     Samplingtree(int n, double* inprobs);
-    void updateProb(int index, double newprob);
+    void updateProb(double * newprob);
     void traversePostOrder();
     void deleteTree();
     int performSampling();
