@@ -12,7 +12,6 @@
 #include <cstdlib>
 #include <ctime>
 
-using namespace std;
 
 class Algorithm2 {
 private:

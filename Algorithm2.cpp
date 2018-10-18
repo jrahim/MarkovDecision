@@ -4,7 +4,6 @@
 
 #include "Algorithm2.h"
 
-using namespace std;
 
 Algorithm2::Algorithm2(Inputs inp, int numStates, int numActions) {
     inputs = inp;
@@ -38,9 +37,9 @@ void Algorithm2::runAlgorithm(int numIterations) {
 }
 
 void Algorithm2::printV() {
-    cout << "[";
+    std::cout << "[";
     for (int i = 0; i < n; i++) {
-        cout << v[i] << ", " ;
+        std::cout << v[i] << ", " ;
     }
-    cout << "]" << endl;
+    std::cout << "]" << std::endl;
 }

@@ -135,7 +135,7 @@ void Algorithm1::run() {
 
 void Algorithm1::outputPiHat() {
     //line 13 Output!!
-    double ** PiHat = new double*[noOfStates];
+    PiHat = new double*[noOfStates];
     for(int i=0; i<noOfStates; i++){
         PiHat[i]= new double[noOfActions];
         for(int a=0; a<noOfActions; a++){
