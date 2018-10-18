@@ -18,7 +18,7 @@ int main() {
 
     //line 1
     int n=10; //no. of States. |S| = n
-    int m=5; //no. of Actions. |A| = m
+    int m=5;  //no. of Actions. |A| = m
     Inputs inp = initialize(n,m);
 
     double * q = new double[n];
