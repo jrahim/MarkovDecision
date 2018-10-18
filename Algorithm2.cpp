@@ -12,7 +12,7 @@ Algorithm2::Algorithm2(Inputs inp, int numStates, int numActions) {
     m = numActions;
 }
 
-int Algorithm2::runAlgorithm(int numIterations) {
+void Algorithm2::runAlgorithm(int numIterations) {
     v = new double[n];
     double * Tv = new double[n];
     for (int iter = 0; iter < numIterations; iter++) {
@@ -37,7 +37,7 @@ int Algorithm2::runAlgorithm(int numIterations) {
     }
 }
 
-int Algorithm2::printV() {
+void Algorithm2::printV() {
     cout << "[";
     for (int i = 0; i < n; i++) {
         cout << v[i] << ", " ;

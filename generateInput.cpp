@@ -1,3 +1,6 @@
+#ifndef GENERATEINPUT_CPP
+#define GENERATEINPUT_CPP
+
 #include <iostream>
 #include <stdlib.h>
 
@@ -101,4 +104,6 @@ int main(){
 	return 0;
 }
 */
+
+#endif //GENERATEINPUT_CPP
 

@@ -23,8 +23,8 @@ private:
 
 public:
     Algorithm2(Inputs inp, int numStates, int numActions);
-    runAlgorithm(int numIterations);
-    printV();
+    void runAlgorithm(int numIterations);
+    void printV();
 };
 
 
