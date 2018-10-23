@@ -16,7 +16,7 @@ void Algorithm1::initializeAlgorithm(int n, int m, Inputs inp, int T){
     q = new double[n];
     for(int i=0; i<n; i++) q[i] = 1.0/n;
 
-    Theta = 1 - inp.y;
+    Theta = 1 - inp.gamma;
     Time = T;
 
     //line 2
@@ -39,9 +39,9 @@ void Algorithm1::initializeAlgorithm(int n, int m, Inputs inp, int T){
     }
 
     //line 4
-    Beta = (1-inp.y)*sqrt((log(n*m + 1))/(2*n*m*T)); //
-    Alpha = (n / (2*pow(1-inp.y,2)))*Beta;
-    M = (1.0/(1-inp.y));
+    Beta = (1-inp.gamma)*sqrt((log(n*m + 1))/(2*n*m*T));
+    Alpha = (n / (2*pow(1-inp.gamma,2)))*Beta;
+    M = (1.0/(1-inp.gamma));
 
     //line 5
     //preprocess input probabilties P = {pij(a)} for sampling done
@@ -54,6 +54,8 @@ void Algorithm1::initializeAlgorithm(int n, int m, Inputs inp, int T){
     }
 
     PiT = new double**[T];
+
+
     iProb = new double[n];
     for(int i=0; i<n; i++) iProb[i] = (1-Theta)*Epsilon[i] + Theta*q[i];
     iSample = new Samplingtree(n, iProb);
@@ -73,7 +75,6 @@ void Algorithm1::run() {
         //sample i with probability ((1-Theta)*Epsilon i + Theta*(q i))
         for(int i=0; i<noOfStates; i++) iProb[i] = (1-Theta)*Epsilon[i] + Theta*q[i];
 
-
         iSample->updateProb(iProb);
         int stateI = iSample->performSampling();
         //Samplingtree *IS = new Samplingtree(noOfStates, iProb);
@@ -85,7 +86,6 @@ void Algorithm1::run() {
         //sample a with probability PiI i
         int actionA = aSample[stateI]->performSampling();
 
-
         //line 9
         //conditioned on (i,a) sample j with probability p i,j(a)
         int stateJ = P[stateI][actionA]->performSampling();
@@ -93,33 +93,35 @@ void Algorithm1::run() {
         //std::cout<<"stateI: "<<stateI<<" stateJ: "<<stateJ;
 
         //line 10
-        double delta = (inputs.y*v[stateJ] - v[stateI] + inputs.R[stateI][actionA][stateJ] - M);
-        delta = delta/(((1-Theta)*Epsilon[stateI] + Theta*q[stateI])*(PiI[stateI][actionA])/PiISum[stateI]);
+        double delta = (inputs.gamma*v[stateJ] - v[stateI] + inputs.R[stateI][actionA][stateJ] - M);
+        delta = delta/(((1-Theta)*Epsilon[stateI] + Theta*q[stateI])*(PiI[stateI][actionA]/PiISum[stateI]));
         delta = delta*Beta;
 
-        double tempVal = ((1-inputs.y)*q[stateI]);
+        double tempVal = ((1-inputs.gamma)*q[stateI]);
         tempVal = tempVal / (((1-Theta)*Epsilon[stateI] + Theta*q[stateI]));
-        double tempMin = std::min((v[stateI] - Alpha*(tempVal-1)), M);
+        double tempMin = std::min( (v[stateI] - Alpha*(tempVal-1)), M);
+
         v[stateI] = std::max(tempMin,0.0);
         //std::cout<<" tempMinI: "<<v[stateI];
 
-        tempMin = std::min((v[stateJ] - Alpha*inputs.y), M);
+        tempMin = std::min((v[stateJ] - Alpha*inputs.gamma), M);
+
         v[stateJ] = std::max(tempMin, 0.0);
         //std::cout<<" tempMinJ: "<<v[stateJ]<<"\n";
 
         //line 11
         Epsilon[stateI] = Epsilon[stateI] + Epsilon[stateI]*(PiI[stateI][actionA]/PiISum[stateI])*(exp(delta)-1);
-        //ask if correct
+
         double sum =0;
         for(int i=0; i<noOfStates; i++) sum += std::abs(Epsilon[i]);
         for(int i=0; i<noOfStates; i++) Epsilon[i] = Epsilon[i]/sum;
 
         double prevPiIVal = PiI[stateI][actionA];
-        PiI[stateI][actionA] = PiI[stateI][actionA]*(exp(delta));
-        PiISum[stateI] = PiISum[stateI] + PiI[stateI][actionA] - prevPiIVal;
+        PiI[stateI][actionA] = prevPiIVal*(exp(delta));
+        PiISum[stateI] = PiISum[stateI] + prevPiIVal*(exp(delta)-1)/PiISum[stateI];
 
         //aSample[stateI]->updateSingleProb(actionA, PiI[stateI][actionA]); you have to update one leaf node only. not entire row
-
+        aSample[stateI]->updateProb(PiI[stateI]);
 
 
         PiT[t] = new double*[noOfStates];
@@ -131,7 +133,7 @@ void Algorithm1::run() {
         for(int a=0; a<noOfActions; a++)  PiT[t][stateI][a] = PiI[stateI][a];
 
         //debugging
-        if((t+1)%1000 == 0){
+        if((t+1)%1 == 0){
             for(int i=0; i<noOfStates; i++)std::cout<<v[i]<<" ";
             std::cout<<"\n";
         }

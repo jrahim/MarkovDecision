@@ -17,6 +17,7 @@ private:
     double * q;
     double Theta, Time;
     double * v;
+
     double * Epsilon;
     double ** PiI;
     double * PiISum;

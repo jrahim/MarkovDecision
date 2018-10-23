@@ -9,7 +9,7 @@ struct Inputs{
 	int* A;
 	double*** P;
 	double*** R;
-	double y; //gamma
+	double gamma; //gamma
 };
 
 
@@ -35,7 +35,7 @@ static Inputs initialize(int n, int m, double y){
 			for(int j=0; j<n; j++){
 				probs[i][a][j] = rand()%10;
 				sum += probs[i][a][j];
-				rewards[i][a][j] = ((double)rand()/RAND_MAX);
+				rewards[i][a][j] = 1; //((double)rand()/RAND_MAX);
 			}
 			for(int j=0; j<n; j++) probs[i][a][j] /= sum;
 		}
@@ -46,7 +46,7 @@ static Inputs initialize(int n, int m, double y){
 	in.A = actions;
 	in.P = probs;
 	in.R = rewards;
-	in.y = gamma;
+	in.gamma = gamma;
 	return in; 
 
 }
@@ -97,7 +97,7 @@ int main(){
 		}
 	}
 
-	std::cout<<ins.y<<"\n";
+	std::cout<<ins.gamma<<"\n";
 
 	// make sure you free space at the end
 	for(int i=0; i<n; i++){
