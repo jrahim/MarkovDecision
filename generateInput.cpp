@@ -10,7 +10,6 @@ struct Inputs{
 	double*** P;
 	double*** R;
 	double y; //gamma
-
 };
 
 
@@ -20,7 +19,6 @@ static Inputs initialize(int n, int m, double y){
 	double *** probs = new double**[n];
 	double *** rewards = new double**[n];
 	double gamma = y;
-
 
 	//initializing states and actions
 	for(int i=0; i<n; i++) states[i]= i;
@@ -33,11 +31,11 @@ static Inputs initialize(int n, int m, double y){
 		for(int a=0; a<m; a++){
 			probs[i][a] = new double[n];
 			rewards[i][a] = new double[n];
-			int sum=0;
+			double sum=0;
 			for(int j=0; j<n; j++){
 				probs[i][a][j] = rand()%10;
 				sum += probs[i][a][j];
-				rewards[i][a][j] = rand()%10;
+				rewards[i][a][j] = ((double)rand()/RAND_MAX);
 			}
 			for(int j=0; j<n; j++) probs[i][a][j] /= sum;
 		}
@@ -53,6 +51,19 @@ static Inputs initialize(int n, int m, double y){
 
 }
 
+static void clearInputs(int n, int m, Inputs ins){
+	for(int i=0; i<n; i++){
+		for(int a=0; a<m; a++){
+			delete []ins.P[i][a];
+			delete []ins.R[i][a];
+		}
+		delete []ins.P[i];
+		delete []ins.R[i];
+	}
+
+	delete []ins.S;
+	delete []ins.A;
+}
 /* for debugging purposes
 int main(){
 	int n=10;

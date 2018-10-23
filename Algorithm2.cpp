@@ -23,7 +23,7 @@ void Algorithm2::runAlgorithm(int numIterations) {
                 double sum2 = 0.0;
                 for (int j = 0; j< n; j++) {
                     sum1 += inputs.P[i][a][j] * v[j] * inputs.y;
-                    sum2 += inputs.P[i][a][j] * inputs.R[i][a][j];
+                    sum2 += inputs.P[i][a][j] * inputs.R[i][a][j]; //precompute
                 }
                 double total = sum1 + sum2;
                 if (total > Ti) {

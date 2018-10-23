@@ -19,6 +19,7 @@ private:
     double * v;
     double * Epsilon;
     double ** PiI;
+    double * PiISum;
 
     double Beta, Alpha, M;
 
@@ -27,7 +28,6 @@ private:
     Samplingtree * iSample;
 
     Samplingtree ** aSample;
-    bool * deltaI;
 
     double *** PiT;
     double ** PiHat;
