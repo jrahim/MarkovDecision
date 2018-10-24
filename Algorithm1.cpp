@@ -120,8 +120,7 @@ void Algorithm1::run() {
         PiI[stateI][actionA] = prevPiIVal*(exp(delta));
         PiISum[stateI] = PiISum[stateI] + prevPiIVal*(exp(delta)-1)/PiISum[stateI];
 
-        //aSample[stateI]->updateSingleProb(actionA, PiI[stateI][actionA]); you have to update one leaf node only. not entire row
-        aSample[stateI]->updateProb(PiI[stateI]);
+        aSample[stateI]->updateProb(actionA, PiI[stateI][actionA]); //you have to update one leaf node only. not entire row
 
 
         PiT[t] = new double*[noOfStates];
