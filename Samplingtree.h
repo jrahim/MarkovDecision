@@ -23,6 +23,7 @@ private:
 public:
     Samplingtree(int n, double* inprobs);
     void updateProb(double * newprob);
+    void updateProb(int index, double newprob);
     void traversePostOrder();
     void deleteTree();
     int performSampling();

@@ -82,6 +82,15 @@ void Samplingtree::updateProb(double * newprob) {
     updateHelper(root);
 }
 
+void Samplingtree::updateProb(int index, double newprob) {
+    SamplingTreeNode *node = probs[index];
+    node->setProbability(newprob);
+    while (node->getParent() != nullptr) {
+        node = node->getParent();
+        node->recalculateProbability();
+    }
+}
+
 void Samplingtree::deleteTreeHelper(SamplingTreeNode* node) {
     // first recur on left subtree
     if (node->getLeftChild() != nullptr) {
