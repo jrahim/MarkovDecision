@@ -9,7 +9,8 @@
 #include <time.h>
 
 Samplingtree::Samplingtree(int n, double* inprobs) {
-    int n2 = pow(2, ceil(log2(n)));
+
+    int n2 = (n > 1) ? pow(2, ceil(log2(n))) : 2;
     numProbs = n2;
     numOrgProbs = n;
     probs = new SamplingTreeNode*[n2];
@@ -24,6 +25,7 @@ Samplingtree::Samplingtree(int n, double* inprobs) {
 }
 
 void Samplingtree::makeTree() {
+
     SamplingTreeNode** currentlayer = probs;
     SamplingTreeNode** nextlayer = nullptr;
     for (int i = log2(numProbs); i > 0; i--) {
