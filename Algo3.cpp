@@ -29,7 +29,7 @@ double Algo3::ApxTrans(double* u, double M, double epsilon, double psi, int acti
     return (sum/m);
 }
 
-value_policy** Algo3::ApxVal(double *u, double *v0, double **x, double epsilon, double psi) {
+value_policy Algo3::ApxVal(double *u, double *v0, double **x, double epsilon, double psi) {
     double* uminv0 = new double[n]();
     double M = 0;
     for (int i = 0; i < n; i++) {
