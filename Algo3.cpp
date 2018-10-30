@@ -12,7 +12,7 @@ Algo3::Algo3(int S, int A, Inputs inp) {
     probTrees = new Samplingtree** [n];
     for (int i = 0; i < n; i++) {
         R[i] = new double[m]();
-        probTrees[n] = new Samplingtree *[m];
+        probTrees[i] = new Samplingtree *[m];
         for (int a = 0; a < m; a++) {
             R[i][a] = inputs.R[0][a][i];
             if(abs(R[i][a]) > M) M = R[i][a];
@@ -62,11 +62,11 @@ value_policy* Algo3::ApxVal(double *u, double *v0, double **x, double epsilon, d
         delete Q[i];
         delete S[i];
     }
-    delete Q;
-    delete S;
+    delete []Q;
+    delete []S;
     value_policy* vpl = new value_policy();
-    vpl.values = v;
-    vpl.pi = p;
+    vpl->values = v;
+    vpl->pi = p;
     return vpl;
 }
 
@@ -74,9 +74,9 @@ value_policy* Algo3::RandomizedVI(double *v0, int L, double epsilon, double delt
     double ** x = new double*[n];
     //line 1
     for(int i=0; i<n; i++){
-        x[i] = new double[m];
+        x[i] = new double[m]();
         for(int a=0; a<m; a++) {
-            x[i][a] = 0;
+
             for (int j = 0; j < n; j++) {
                 x[i][a] += inputs.P[i][a][j] * v0[j];
             }
@@ -86,16 +86,17 @@ value_policy* Algo3::RandomizedVI(double *v0, int L, double epsilon, double delt
 
     value_policy *vpl;
     for(int l=1; l<L; l++){
-        vpl = ApxVal(vplm1.values, v0, x, epsilon, delta/L);
+        vpl = ApxVal(vplm1->values, v0, x, epsilon, delta/L);
         delete []vplm1->values;
         delete []vplm1->pi;
         vplm1 = vpl;
     }
-    delete vplm1;
+    vplm1 = nullptr;
     return vpl;
 }
 
 value_policy* Algo3::HighPrecisionRandomVI(double epsilon, double delta) {
+
     int K = (int) ceil(log2(M/(epsilon*(1-inputs.gamma))));
     int L = (int) ceil(log2(4/(1-inputs.gamma)) * (1/(1-inputs.gamma)));
     double * v0 = new double[n]();
@@ -103,7 +104,7 @@ value_policy* Algo3::HighPrecisionRandomVI(double epsilon, double delta) {
     value_policy *vplm1 = RandomizedVI(v0, L,(1 -inputs.gamma)*epsilon0/(4*inputs.gamma), delta/K);
     value_policy *vpl;
 
-    for(int k=1; k<K; k++){
+    for(int k=1; k < K; k++){
         double epsilonk = M/((1-inputs.gamma)*pow(2,k+1));
         vpl = RandomizedVI(vplm1->values, L,(1 -inputs.gamma)*epsilonk/(4*inputs.gamma), delta/K);
         delete []vplm1->values;
