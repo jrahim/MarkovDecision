@@ -4,11 +4,6 @@
 
 #include "Algo3.h"
 
-struct value_policy{
-    double * values;
-    double * pi;
-};
-
 Algo3::Algo3(int S, int A, Inputs inp) {
     n = S;
     m = A;
@@ -34,12 +29,12 @@ double Algo3::ApxTrans(double* u, double M, double epsilon, double psi, int acti
     return (sum/m);
 }
 
-double** Algo3::ApxVal(double *u, double *v0, double **x, double epsilon, double psi) {
+value_policy** Algo3::ApxVal(double *u, double *v0, double **x, double epsilon, double psi) {
     double* uminv0 = new double[n]();
     double M = 0;
     for (int i = 0; i < n; i++) {
         uminv0[i] = u[i] - v0[i];
-        if (abs(uminv0[i]) > infnorm) {
+        if (abs(uminv0[i]) > M) {
             M = abs(uminv0[i]);
         }
     }
@@ -63,7 +58,15 @@ double** Algo3::ApxVal(double *u, double *v0, double **x, double epsilon, double
                 }
             }
         }
+        delete Q[i];
+        delete S[i];
     }
+    delete Q;
+    delete S;
+    value_policy vpl = new value_policy();
+    vpl.values = v;
+    vpl.pi = p;
+    return vpl;
 }
 
 double ** Algo3::RandomizedVI(double *v0, int L, double epsilon, double delta) {
