@@ -182,7 +182,7 @@ void Algorithm1::outputPi(){
 
 
 void Algorithm1::outputV(){
-    std::cout<<"\n";
+    std::cout<<"\nalgo1's V: ";
     for(int i=0; i<noOfStates; i++) std::cout<<v[i]<<" ";
     std::cout<<"\n";
 }
