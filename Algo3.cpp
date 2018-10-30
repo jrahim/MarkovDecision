@@ -4,10 +4,6 @@
 
 #include "Algo3.h"
 
-struct value_policy{
-    double * values;
-    double * pi;
-};
 
 Algo3::Algo3(int S, int A, Inputs inp) {
     n = S;
@@ -89,4 +85,8 @@ value_policy Algo3::RandomizedVI(double *v0, int L, double epsilon, double delta
         vplm1 = vpl;
     }
     return vpl;
+}
+
+value_policy Algo3::HighPrecisionRandomVI(double epsilon, double delta) {
+
 }
