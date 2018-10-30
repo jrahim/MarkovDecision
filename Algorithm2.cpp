@@ -39,7 +39,7 @@ void Algorithm2::runAlgorithm(int numIterations) {
 }
 
 void Algorithm2::printV() {
-    std::cout << "[";
+    std::cout << "algo2's V: [";
     for (int i = 0; i < n; i++) {
         std::cout << v[i] << ", " ;
     }
