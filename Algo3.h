@@ -26,6 +26,7 @@ private:
     int m;
     Samplingtree*** probTrees;
     double ** R;
+    double M = 0;
 
 public:
     double ApxTrans(double* u, double M, double epsilon, double psi, int action, int state);
