@@ -124,12 +124,13 @@ void Algorithm1::run() {
 
 
         PiT[t] = new double*[noOfStates];
+
         for(int i=0; i<noOfStates; i++) {
             PiT[t][i] = new double[noOfActions]; //till what the code says
             for(int a=0; a<noOfActions; a++) PiT[t][i][a] = 1.0/noOfActions;
         }
 
-        for(int a=0; a<noOfActions; a++)  PiT[t][stateI][a] = PiI[stateI][a];
+        for(int a=0; a<noOfActions; a++)  PiT[t][stateI][a] = PiI[stateI][a]/PiISum[stateI];
 
         //debugging
         if((t+1)%1 == 0){
@@ -158,6 +159,7 @@ void Algorithm1::outputPiHat() {
         for(int a=0; a<noOfActions; a++){
             std::cout<<PiHat[i][a]<<" ";
         }
+
         std::cout<<"\n";
     }
 
@@ -168,10 +170,23 @@ void Algorithm1::outputPiHat() {
 
 }
 
+void Algorithm1::outputPi(){
+    std::cout<<"\n";
+    for(int i=0; i<noOfStates; i++) {
+        std::cout<<"stateI: "<<i<<"\n";
+        for(int a=0; a<noOfActions; a++) std::cout<<PiI[i][a]<<" ";
+        std::cout<<"\n";
+    }
+    std::cout<<"\n";
+}
+
+
 void Algorithm1::outputV(){
+    std::cout<<"\n";
     for(int i=0; i<noOfStates; i++) std::cout<<v[i]<<" ";
     std::cout<<"\n";
 }
+
 void Algorithm1::clearData() {
 
 

@@ -33,7 +33,8 @@ static Inputs initialize(int n, int m, double y){
 			rewards[i][a] = new double[n];
 			double sum=0;
 			for(int j=0; j<n; j++){
-				probs[i][a][j] = rand()%10;
+				//probs[i][a][j] = rand()%10;  commenting out for debugging
+				probs[i][a][j] = 1;
 				sum += probs[i][a][j];
 				rewards[i][a][j] = 1; //((double)rand()/RAND_MAX);
 			}

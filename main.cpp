@@ -19,6 +19,7 @@ void runAlgo1(Inputs inp, int n, int m, int numIterations) {
     algo1->initializeAlgorithm(n,m,inp, numIterations);
     algo1->run();
     algo1->outputV();
+    algo1->outputPi();
     algo1->clearData();
 }
 
@@ -27,7 +28,6 @@ void runAlgo2(Inputs inp, int n, int m, int numIterations) {
     algo2->runAlgorithm(numIterations);
     algo2->printV();
 }
-
 
 int main() {
     int n=10;

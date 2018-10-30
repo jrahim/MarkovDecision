@@ -38,6 +38,7 @@ public:
     void initializeAlgorithm(int n, int m, Inputs inp, int T);
     void run();
     void outputV();
+    void outputPi();
     void outputPiHat();
     void clearData();
 
