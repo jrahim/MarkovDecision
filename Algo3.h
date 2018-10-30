@@ -28,8 +28,8 @@ private:
     double ** R;
 public:
     double ApxTrans(double* u, double M, double epsilon, double psi, int action, int state);
-    value_policy** ApxVal(double* u, double* v0, double** x, double epsilon, double psi);
-    double **  RandomizedVI(double * v0, int L, double epsilon, double delta);
+    value_policy ApxVal(double* u, double* v0, double** x, double epsilon, double psi);
+    value_policy  RandomizedVI(double * v0, int L, double epsilon, double delta);
     Algo3(int S, int A, Inputs inp);
 };
 
