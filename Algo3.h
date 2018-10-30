@@ -20,8 +20,12 @@ private:
     int m;
     double * v;
     Samplingtree*** probTrees;
+
 public:
     double ApxTrans(double M, double epsilon, double psi, int action, int state);
+
+
+    double **  RandomizedVI(double * v0, int L, double epsilon, double delta);
     Algo3();
 };
 
