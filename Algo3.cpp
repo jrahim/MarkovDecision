@@ -30,7 +30,7 @@ double Algo3::ApxTrans(double M, double epsilon, double psi, int action, int sta
     }
 }
 
-double ** Algo3::RandomizedVI(double *v0, int L, double epsilon, double delta) {
+value_policy Algo3::RandomizedVI(double *v0, int L, double epsilon, double delta) {
     double ** x = new double*[n];
     //line 1
     for(int i=0; i<n; i++){
@@ -42,9 +42,15 @@ double ** Algo3::RandomizedVI(double *v0, int L, double epsilon, double delta) {
             }
         }
     }
-    value_policy vpl;
-    vpl.values =
-    for(int i=1; i<L; i++){
+    value_policy vplm1;
+    vplm1 = ApxVal(v0, v0, x, epsilon, delta/L);
 
+    value_policy vpl;
+    for(int i=1; i<L; i++){
+        vpl = ApxVal(vplm1.values, v0, x, epsilon, delta/L);
+        delete []vplm1.values;
+        delete []vplm1.pi;
+        vplm1 = vpl;
     }
+    return vpl;
 }
