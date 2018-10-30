@@ -18,10 +18,11 @@ private:
     Inputs inputs;
     int n;
     int m;
-    double * v;
     Samplingtree*** probTrees;
+    double ** R;
 public:
-    double ApxTrans(double M, double epsilon, double psi, int action, int state);
+    double ApxTrans(double* u, double M, double epsilon, double psi, int action, int state);
+    double** ApxVal(double* u, double* v0, double** x, double epsilon, double psi);
     Algo3();
 };
 
