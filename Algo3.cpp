@@ -14,20 +14,23 @@ Algo3::Algo3(int S, int A, Inputs inp) {
         R[i] = new double[m]();
         probTrees[i] = new Samplingtree *[m];
         for (int a = 0; a < m; a++) {
-            R[i][a] = inputs.R[0][a][i];
+            R[i][a] = 0;
+            for (int j = 0; j < n; j++) {
+                R[i][a] += inputs.P[i][a][j] * inputs.R[i][a][j];
+            }
             if(abs(R[i][a]) > M) M = R[i][a];
             probTrees[i][a] = new Samplingtree(n, inputs.P[i][a]);
         }
     }
 }
 
-double Algo3::ApxTrans(double* u, double M, double epsilon, double psi, int action, int state) {
+double Algo3::ApxTrans(double* u, double M, int state, int action, double epsilon, double psi) {
     double m = ceil( (2 * pow(M, 2) / pow(epsilon, 2) * log(2 / psi)) );
     double sum = 0;
     for (int i = 0; i < m; i++) {
         sum += u[probTrees[state][action]->performSampling()];
     }
-    return (sum/m);
+    return (sum == 0)? 0: (sum/m);
 }
 
 value_policy* Algo3::ApxVal(double *u, double *v0, double **x, double epsilon, double psi) {
@@ -111,7 +114,7 @@ value_policy* Algo3::HighPrecisionRandomVI(double epsilon, double delta) {
         delete []vplm1->pi;
         vplm1 = vpl;
     }
-    delete vplm1;
+    vplm1 = nullptr;
 
     return vpl;
 }

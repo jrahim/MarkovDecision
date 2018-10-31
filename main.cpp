@@ -31,17 +31,27 @@ void runAlgo2(Inputs inp, int n, int m, int numIterations) {
 }
 
 int main() {
-    int n = 1;
-    int m = 1;
+    srand(time(0));
+
+    int n = 1000;
+    int m = 1000;
     double gamma = 0.5;
     Inputs inp = initialize(n, m, gamma);
 
+
     Algorithm2 *algo2 = new Algorithm2(inp, n, m);
-    algo2->runAlgorithm(1000);
+    clock_t start;
+    double duration;
+
+    start = clock();
+    algo2->runAlgorithm(100);
+    duration = (clock() - start ) / (double) CLOCKS_PER_SEC;
+
+    std::cout<<"printf: "<< duration <<'\n';
     algo2->printV();
 
-/*
-    Algorithm1 *algo1 = new Algorithm1();
+
+/*    Algorithm1 *algo1 = new Algorithm1();
     algo1->initializeAlgorithm(n, m, inp, 10000);
     algo1->run();
     algo1->outputV();
@@ -55,16 +65,23 @@ int main() {
     */
 
 
-    double epsilon = 0.9;
-    double delta = 0.9;
+    double epsilon = 0.00001;
+    double delta = 0.99;
 
     value_policy *vpl;
     Algo3 *algo3 = new Algo3(n,m,inp);
+
+    start = clock();
     vpl = algo3->HighPrecisionRandomVI(epsilon, delta);
+    duration = (clock() - start ) / (double) CLOCKS_PER_SEC;
+
+    std::cout<<"printf: "<< duration <<'\n';
 
     std::cout<<"algo3:\n";
     for(int i=0; i<n; i++){
         std::cout<<vpl->values[i]<<" ";
     }
+    std::cout<<"\n";
+
     return 0;
 }
