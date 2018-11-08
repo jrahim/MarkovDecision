@@ -20,7 +20,7 @@ Algo3::Algo3(int S, int A, Inputs inp) {
     }
 }
 
-double Algo3::ApxTrans(double* u, double M, double epsilon, double psi, int action, int state) {
+double Algo3::ApxTrans(double* u, double M, int action, int state, double epsilon, double psi) {
     double m = ceil( (2 * pow(M, 2) / pow(epsilon, 2) * log(2 / psi)) );
     double sum = 0;
     for (int i = 0; i < m; i++) {
