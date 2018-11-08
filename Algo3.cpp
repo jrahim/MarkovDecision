@@ -104,6 +104,7 @@ value_policy* Algo3::HighPrecisionRandomVI(double epsilon, double delta) {
     int L = (int) ceil(log2(4/(1-inputs.gamma)) * (1/(1-inputs.gamma)));
     double * v0 = new double[n]();
     double epsilon0 = M/(1-inputs.gamma);
+
     value_policy *vplm1 = RandomizedVI(v0, L,(1 -inputs.gamma)*epsilon0/(4*inputs.gamma), delta/K);
     value_policy *vpl;
     for(int k=1; k < K; k++){
