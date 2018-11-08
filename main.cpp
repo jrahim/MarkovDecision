@@ -17,10 +17,10 @@
 int main() {
     srand(time(0));
 
-    std::string filename, value;
+    std::string dataFile, value;
     double epsilon, delta;
     std::cout<<"Please enter input filename (or leave blank to generate input):\n";
-    getline(std::cin, filename);
+    getline(std::cin, dataFile);
 
     std::cout<<"Epsilon:\n";
     getline(std::cin, value);
@@ -33,22 +33,18 @@ int main() {
     Inputs inp;
     int n,m;
     double gamma;
-    if(!getData(filename, inp)){
-        n=100;
-        m=100;
-        gamma=0.999;
+    if(!getData(dataFile, inp)){
+        n=5;
+        m=5;
+        gamma=0.5;
         inp = initialize(n,m,gamma);
-        std::string curtime = getCurrentTime();
-        curtime = curtime + " - data.csv";
-        saveData(curtime, n, m, inp);
+        dataFile = getCurrentTime();
+        dataFile = dataFile + " - data.csv";
+        saveData(dataFile, n, m, inp);
     }else{
         n = inp.N;
         m = inp.M;
     }
-
-
-
-
 
 
 
@@ -83,7 +79,7 @@ int main() {
     clock_t start;
     double duration;
     start = clock();
-    vpl = algo3->SublinearRandomVI(epsilon, delta, 1);
+    vpl = algo3->HighPrecisionRandomVI(epsilon, delta);
     duration = (clock() - start ) / (double) CLOCKS_PER_SEC;
 
     std::cout<<"printf: "<< duration <<'\n';
@@ -95,6 +91,9 @@ int main() {
     std::cout<<"\n";
 
 
+    saveTimes(dataFile, inp.gamma, epsilon, delta,algo2->getTime(), duration);
+
     clearInputs(n,m, inp);
     return 0;
 }
+

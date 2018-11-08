@@ -185,33 +185,33 @@ static void saveData(std::string fileName, int n, int m, Inputs inp) {
     std::ofstream outfile;
     outfile.open(fileName);
 
-    outfile << std::to_string(n) << "," << std::to_string(m) << "," << std::to_string(inp.gamma) << "\n";
+    outfile << n << "," << m << "," << inp.gamma << "\n";
 
     for (int i = 0; i < n - 1; i++) {
-        outfile << std::to_string(inp.S[i]) << ",";
+        outfile << inp.S[i] << ",";
     }
-    outfile << std::to_string(inp.S[n - 1]) << "\n";
+    outfile << inp.S[n - 1] << "\n";
 
     for (int i = 0; i < m - 1; i++) {
-        outfile << std::to_string(inp.A[i]) << ",";
+        outfile << inp.A[i] << ",";
     }
-    outfile << std::to_string(inp.A[m - 1]) << "\n";
+    outfile << inp.A[m - 1] << "\n";
 
     for(int i = 0; i < n; i++){
         for (int a = 0; a < m; a++) {
             for (int j = 0; j < n - 1; j++) {
-                outfile << std::to_string(inp.P[i][a][j]) << ",";
+                outfile << inp.P[i][a][j] << ",";
             }
-            outfile << std::to_string(inp.P[i][a][n - 1]) << "\n";
+            outfile << inp.P[i][a][n - 1] << "\n";
         }
     }
 
     for(int i = 0; i < n; i++){
         for (int a = 0; a < m; a++) {
             for (int j = 0; j < n - 1; j++) {
-                outfile << std::to_string(inp.R[i][a][j]) << ",";
+                outfile << inp.R[i][a][j] << ",";
             }
-            outfile << std::to_string(inp.R[i][a][n - 1]) << "\n";
+            outfile << inp.R[i][a][n - 1] << "\n";
         }
     }
 
@@ -283,7 +283,6 @@ static bool getData(std::string fileName, Inputs & inp){
     return true;
 }
 
-
 static std::string getCurrentTime(){
     time_t rawtime;
     struct tm * timeinfo;
@@ -296,6 +295,30 @@ static std::string getCurrentTime(){
     std::string str(buffer);
 
     return str;
+}
+
+/* File format:
+ * data file
+ * epsilon, delta, gamma
+ * valueIteration_time
+ * varianceReducedVI_time
+ *
+ */
+static void saveTimes(std::string filename, double gamma, double epsilon, double delta, double valueIteration_time, double varianceReducedVI_time){
+    std::string timeBit = filename.substr(0, filename.find(" - data.csv"));
+
+    std::string outputName = timeBit+" - output.txt";
+
+    std::ofstream outfile;
+    outfile.open(outputName, std::ofstream::out | std::ofstream::app);
+
+    outfile<<timeBit<<"\n";
+    outfile<<epsilon<<","<<delta<<","<<gamma<<"\n";
+    outfile<<valueIteration_time<<"\n";
+    outfile<<varianceReducedVI_time<<"\n";
+
+    outfile.close();
+
 }
 
 
