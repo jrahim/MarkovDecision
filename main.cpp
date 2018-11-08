@@ -34,7 +34,7 @@ int main() {
     int n,m;
     double gamma;
     if(!getData(dataFile, inp)){
-        n=5;
+        n=10;
         m=5;
         gamma=0.5;
         inp = initialize(n,m,gamma);

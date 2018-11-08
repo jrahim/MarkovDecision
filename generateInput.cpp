@@ -298,10 +298,8 @@ static std::string getCurrentTime(){
 }
 
 /* File format:
- * data file
- * epsilon, delta, gamma
- * valueIteration_time
- * varianceReducedVI_time
+ * filename: data file - output.txt
+ * each line: epsilon,delta,gamma,valueIteration_time,varianceReducedVI_time
  *
  */
 static void saveTimes(std::string filename, double gamma, double epsilon, double delta, double valueIteration_time, double varianceReducedVI_time){
@@ -312,10 +310,7 @@ static void saveTimes(std::string filename, double gamma, double epsilon, double
     std::ofstream outfile;
     outfile.open(outputName, std::ofstream::out | std::ofstream::app);
 
-    outfile<<timeBit<<"\n";
-    outfile<<epsilon<<","<<delta<<","<<gamma<<"\n";
-    outfile<<valueIteration_time<<"\n";
-    outfile<<varianceReducedVI_time<<"\n";
+    outfile<<epsilon<<","<<delta<<","<<gamma<<","<<valueIteration_time<<","<<varianceReducedVI_time<<"\n";
 
     outfile.close();
 
