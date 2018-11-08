@@ -68,7 +68,7 @@ void Algorithm1::initializeAlgorithm(int n, int m, Inputs inp, int T){
 }
 
 void Algorithm1::run() {
-
+    /*
     //line 6
     for(int t=0; t<Time; t++){
         //line 7
@@ -83,6 +83,7 @@ void Algorithm1::run() {
         //delete IS;
 
         //line 8
+
         //sample a with probability PiI i
         int actionA = aSample[stateI]->performSampling();
 
@@ -138,6 +139,7 @@ void Algorithm1::run() {
             std::cout<<"\n";
         }
     }
+     */
 }
 
 void Algorithm1::outputPiHat() {

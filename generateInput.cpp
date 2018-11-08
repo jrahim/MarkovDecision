@@ -37,7 +37,7 @@ static Inputs initialize(int n, int m, double y){
 				probs[i][a][j] = rand()%10;  //commenting out for debugging
 				//probs[i][a][j] = 1;
 				sum += probs[i][a][j];
-				rewards[i][a][j] = ((double)rand()/RAND_MAX);
+				rewards[i][a][j] = (((double)rand()/RAND_MAX));
 			}
 			for(int j=0; j<n; j++) probs[i][a][j] /= sum;
 		}

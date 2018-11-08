@@ -74,7 +74,7 @@ value_policy* Algo3::ApxVal(double *u, double *v0, double **x, double epsilon, d
 }
 
 value_policy* Algo3::RandomizedVI(double *v0, int L, double epsilon, double delta) {
-    double ** x = new double*[n];
+    x = new double*[n];
     //line 1
     for(int i=0; i<n; i++){
         x[i] = new double[m]();
@@ -106,10 +106,56 @@ value_policy* Algo3::HighPrecisionRandomVI(double epsilon, double delta) {
     double epsilon0 = M/(1-inputs.gamma);
     value_policy *vplm1 = RandomizedVI(v0, L,(1 -inputs.gamma)*epsilon0/(4*inputs.gamma), delta/K);
     value_policy *vpl;
-
     for(int k=1; k < K; k++){
         double epsilonk = M/((1-inputs.gamma)*pow(2,k+1));
         vpl = RandomizedVI(vplm1->values, L,(1 -inputs.gamma)*epsilonk/(4*inputs.gamma), delta/K);
+        delete []vplm1->values;
+        delete []vplm1->pi;
+        vplm1 = vpl;
+    }
+    vplm1 = nullptr;
+
+    return vpl;
+}
+
+value_policy* Algo3::SampledRandomizedVI(double *v0, int L, double epsilon, double delta, int k, int samplingRate) {
+    if (k % samplingRate == 0) {
+        if (k == 0) x = new double *[n];
+        //line 1
+        for (int i = 0; i < n; i++) {
+            if (k == 0) x[i] = new double[m]();
+            for (int a = 0; a < m; a++) {
+                x[i][a] = 0;
+                for (int j = 0; j < n; j++) {
+                    x[i][a] += inputs.P[i][a][j] * v0[j];
+                }
+            }
+        }
+    }
+    value_policy *vplm1 = ApxVal(v0, v0, x, epsilon, delta/L);
+
+    value_policy *vpl;
+    for(int l=1; l<L; l++){
+        vpl = ApxVal(vplm1->values, v0, x, epsilon, delta/L);
+        delete []vplm1->values;
+        delete []vplm1->pi;
+        vplm1 = vpl;
+    }
+    vplm1 = nullptr;
+    return vpl;
+}
+
+value_policy* Algo3::SublinearRandomVI(double epsilon, double delta, int samplingRate) {
+    int K = (int) ceil(log2(M/(epsilon*(1-inputs.gamma))));
+    std::cout << "K=" << K << endl;
+    int L = (int) ceil(log2(4/(1-inputs.gamma)) * (1/(1-inputs.gamma)));
+    double * v0 = new double[n]();
+    double epsilon0 = M/(1-inputs.gamma);
+    value_policy *vplm1 = RandomizedVI(v0, L,(1 -inputs.gamma)*epsilon0/(4*inputs.gamma), delta/K);
+    value_policy *vpl;
+    for(int k=1; k < K; k++){
+        double epsilonk = M/((1-inputs.gamma)*pow(2,k+1));
+        vpl = SampledRandomizedVI(vplm1->values, L,(1 -inputs.gamma)*epsilonk/(4*inputs.gamma), delta/K, k, samplingRate);
         delete []vplm1->values;
         delete []vplm1->pi;
         vplm1 = vpl;

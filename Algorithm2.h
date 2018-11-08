@@ -19,11 +19,14 @@ private:
     int n;
     int m;
     double * v;
+    double totalTime = 0;
 
 public:
     Algorithm2(Inputs inp, int numStates, int numActions);
     void runAlgorithm(int numIterations);
+    void runAlgorithmToConverge(double epsilon);
     void printV();
+    double getTime();
 };
 
 

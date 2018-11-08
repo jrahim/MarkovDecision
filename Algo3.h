@@ -27,12 +27,15 @@ private:
     Samplingtree*** probTrees;
     double ** R;
     double M = 0;
+    double ** x;
 
 public:
     double ApxTrans(double* u, double M, int state, int action, double epsilon, double psi) ;
     value_policy* ApxVal(double* u, double* v0, double** x, double epsilon, double psi);
     value_policy*  RandomizedVI(double * v0, int L, double epsilon, double delta);
     value_policy* HighPrecisionRandomVI(double epsilon, double delta);
+    value_policy* SampledRandomizedVI(double * v0, int L, double epsilon, double delta, int k, int samplingRate);
+    value_policy* SublinearRandomVI(double epsilon, double delta, int samplingRate);
     Algo3(int S, int A, Inputs inp);
 };
 
