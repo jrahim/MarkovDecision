@@ -11,6 +11,7 @@
 #include <ctime>
 #include "Algorithm1.h"
 #include "Algorithm2.h"
+#include "Algo3.h"
 #include <thread>
 
 
@@ -30,24 +31,57 @@ void runAlgo2(Inputs inp, int n, int m, int numIterations) {
 }
 
 int main() {
-    int n = 2;
-    int m = 1;
+    srand(time(0));
+
+    int n = 1000;
+    int m = 1000;
     double gamma = 0.5;
     Inputs inp = initialize(n, m, gamma);
 
-    Algorithm1 *algo1 = new Algorithm1();
+
+    Algorithm2 *algo2 = new Algorithm2(inp, n, m);
+    clock_t start;
+    double duration;
+
+    start = clock();
+    algo2->runAlgorithm(100);
+    duration = (clock() - start ) / (double) CLOCKS_PER_SEC;
+
+    std::cout<<"printf: "<< duration <<'\n';
+    algo2->printV();
+
+
+/*    Algorithm1 *algo1 = new Algorithm1();
     algo1->initializeAlgorithm(n, m, inp, 10000);
     algo1->run();
     algo1->outputV();
   //algo1->outputPi();
     algo1->clearData();
 
-    Algorithm2 *algo2 = new Algorithm2(inp, n, m);
-    algo2->runAlgorithm(1000);
-    algo2->printV();
 
     std::thread algo1T(runAlgo1, inp, n, m, 100);
     std::thread algo2T(runAlgo2, inp, n, m, 100);
+
+    */
+
+
+    double epsilon = 0.00001;
+    double delta = 0.99;
+
+    value_policy *vpl;
+    Algo3 *algo3 = new Algo3(n,m,inp);
+
+    start = clock();
+    vpl = algo3->HighPrecisionRandomVI(epsilon, delta);
+    duration = (clock() - start ) / (double) CLOCKS_PER_SEC;
+
+    std::cout<<"printf: "<< duration <<'\n';
+
+    std::cout<<"algo3:\n";
+    for(int i=0; i<n; i++){
+        std::cout<<vpl->values[i]<<" ";
+    }
+    std::cout<<"\n";
 
     return 0;
 }

@@ -14,6 +14,7 @@ struct Inputs{
 
 
 static Inputs initialize(int n, int m, double y){
+
 	int * states = new int[n];
 	int * actions = new int[m];
 	double *** probs = new double**[n];
@@ -33,10 +34,10 @@ static Inputs initialize(int n, int m, double y){
 			rewards[i][a] = new double[n];
 			double sum=0;
 			for(int j=0; j<n; j++){
-				//probs[i][a][j] = rand()%10;  commenting out for debugging
-				probs[i][a][j] = 1;
+				probs[i][a][j] = rand()%10;  //commenting out for debugging
+				//probs[i][a][j] = 1;
 				sum += probs[i][a][j];
-				rewards[i][a][j] = 1; //((double)rand()/RAND_MAX);
+				rewards[i][a][j] = ((double)rand()/RAND_MAX);
 			}
 			for(int j=0; j<n; j++) probs[i][a][j] /= sum;
 		}
