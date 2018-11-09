@@ -53,7 +53,7 @@ int main() {
 
     algo2->runAlgorithmToConverge(epsilon);
 
-    std::cout<<"printf: "<< algo2->getTime() <<'\n';
+    std::cout<<"value iteration time: "<< algo2->getTime() <<'\n';
     algo2->printV();
 
 
@@ -82,7 +82,7 @@ int main() {
     vpl = algo3->HighPrecisionRandomVI(epsilon, delta);
     duration = (clock() - start ) / (double) CLOCKS_PER_SEC;
 
-    std::cout<<"printf: "<< duration <<'\n';
+    std::cout<<"variance reduced time: "<< duration <<'\n';
 
     std::cout<<"algo3:\n";
     for(int i=0; i<n; i++){
