@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <ctime>
+#include <string>
 
 struct Inputs{
     int N, M;
