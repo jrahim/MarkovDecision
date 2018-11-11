@@ -9,9 +9,9 @@
 #include <algorithm>
 #include <cstdlib>
 #include <ctime>
-#include "Algorithm1.h"
 #include "Algorithm2.h"
 #include "Algo3.h"
+
 
 
 int main() {

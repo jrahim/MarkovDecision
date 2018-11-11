@@ -29,7 +29,8 @@ void Samplingtree::makeTree() {
     SamplingTreeNode** currentlayer = probs;
     SamplingTreeNode** nextlayer = nullptr;
     for (int i = log2(numProbs); i > 0; i--) {
-        nextlayer = new SamplingTreeNode*[pow(2, i-1)];
+        const int sizee = pow(2, i-1);
+        nextlayer = new SamplingTreeNode*[sizee];
         int j = 0;
         while (j < (pow(2, i))) {
             auto* newNode = new SamplingTreeNode;
