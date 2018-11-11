@@ -8,8 +8,6 @@
 #include <ctime>
 #include <string>
 
-using namespace std;
-
 struct Inputs{
     int N, M;
 	int* S;
@@ -301,14 +299,14 @@ static std::string getCurrentTime(){
 }
 
 /* File format:
- * filename: data file - output.txt
+ * filename: data file - output.csv
  * each line: epsilon,delta,gamma,valueIteration_time,varianceReducedVI_time
  *
  */
 static void saveTimes(std::string filename, double gamma, double epsilon, double delta, double valueIteration_time, double varianceReducedVI_time){
     std::string timeBit = filename.substr(0, filename.find(" - data.csv"));
 
-    std::string outputName = timeBit+" - output.txt";
+    std::string outputName = timeBit+" - output.csv";
 
     std::ofstream outfile;
     outfile.open(outputName, std::ofstream::out | std::ofstream::app);
