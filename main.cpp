@@ -18,7 +18,8 @@ int main() {
     srand(time(0));
 
     std::string dataFile, value;
-    double epsilon, delta;
+    double epsilon, delta, gamma;
+    int n,m;
     std::cout<<"Please enter input filename (or leave blank to generate input):\n";
     getline(std::cin, dataFile);
 
@@ -30,13 +31,22 @@ int main() {
     getline(std::cin, value);
     delta = stod(value);
 
+
     Inputs inp;
-    int n,m;
-    double gamma;
     if(!getData(dataFile, inp)){
-        n=10;
-        m=5;
-        gamma=0.5;
+        std::cout<<"Error reading input file. Either blank or incorrect naming format. Input will be generated.\n";
+        std::cout<<"Number of States:\n";
+        getline(std::cin, value);
+        n = stoi(value);
+
+        std::cout<<"Number of Actions:\n";
+        getline(std::cin, value);
+        m = stoi(value);
+
+        std::cout<<"Gamma:\n";
+        getline(std::cin, value);
+        gamma = stod(value);
+
         inp = initialize(n,m,gamma);
         dataFile = getCurrentTime();
         dataFile = dataFile + " - data.csv";
@@ -44,33 +54,17 @@ int main() {
     }else{
         n = inp.N;
         m = inp.M;
+        gamma = inp.gamma;
     }
 
 
 
     Algorithm2 *algo2 = new Algorithm2(inp, n, m);
 
-
     algo2->runAlgorithmToConverge(epsilon);
 
     std::cout<<"value iteration time: "<< algo2->getTime() <<'\n';
     algo2->printV();
-
-
-/*  Algorithm1 *algo1 = new Algorithm1();
-    algo1->initializeAlgorithm(n, m, inp, 10000);
-    algo1->run();
-    algo1->outputV();
-  //algo1->outputPi();
-    algo1->clearData();
-
-
-    std::thread algo1T(runAlgo1, inp, n, m, 100);
-    std::thread algo2T(runAlgo2, inp, n, m, 100);
-
-    */
-
-
 
 
     value_policy *vpl;
@@ -91,7 +85,7 @@ int main() {
     std::cout<<"\n";
 
 
-    saveTimes(dataFile, inp.gamma, epsilon, delta,algo2->getTime(), duration);
+    saveTimes(dataFile, n, m,  inp.gamma, epsilon, delta,algo2->getTime(), duration);
 
     clearInputs(n,m, inp);
     return 0;

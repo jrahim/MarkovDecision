@@ -7,6 +7,7 @@
 #include <iostream>
 #include <ctime>
 #include <string>
+#include <regex>
 
 struct Inputs{
     int N, M;
@@ -223,7 +224,9 @@ static void saveData(std::string fileName, int n, int m, Inputs inp) {
 static bool getData(std::string fileName, Inputs & inp){
     std::ifstream infile;
 
-    if(fileName=="") return false;
+    std::regex e("((.*\\/|)(0[1-9]|[12]\\d|3[01])-(0[1-9]|1[0-2])-[12]\\d{3} (0\\d|1\\d|2[0-3]):([0-5]\\d):([0-5]\\d) - data.csv)");
+    if(!std::regex_match(fileName, e))
+        return false;
 
     infile.open(fileName);
     if (infile.fail()) return false;
@@ -300,10 +303,10 @@ static std::string getCurrentTime(){
 
 /* File format:
  * filename: data file - output.csv
- * each line: epsilon,delta,gamma,valueIteration_time,varianceReducedVI_time
+ * each line: |S|,|A|,epsilon,delta,gamma,valueIteration_time,varianceReducedVI_time
  *
  */
-static void saveTimes(std::string filename, double gamma, double epsilon, double delta, double valueIteration_time, double varianceReducedVI_time){
+static void saveTimes(std::string filename, int n, int m, double gamma, double epsilon, double delta, double valueIteration_time, double varianceReducedVI_time){
     std::string timeBit = filename.substr(0, filename.find(" - data.csv"));
 
     std::string outputName = timeBit+" - output.csv";
@@ -311,7 +314,7 @@ static void saveTimes(std::string filename, double gamma, double epsilon, double
     std::ofstream outfile;
     outfile.open(outputName, std::ofstream::out | std::ofstream::app);
 
-    outfile<<epsilon<<","<<delta<<","<<gamma<<","<<valueIteration_time<<","<<varianceReducedVI_time<<"\n";
+    outfile<<n<<","<<m<<","<<epsilon<<","<<delta<<","<<gamma<<","<<valueIteration_time<<","<<varianceReducedVI_time<<"\n";
 
     outfile.close();
 
