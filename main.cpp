@@ -25,11 +25,11 @@ int main() {
 
     std::cout<<"Epsilon:\n";
     getline(std::cin, value);
-    epsilon = stod(value);
+    epsilon = std::stod(value);
 
     std::cout<<"Delta:\n";
     getline(std::cin, value);
-    delta = stod(value);
+    delta = std::stod(value);
 
 
     Inputs inp;
@@ -37,15 +37,15 @@ int main() {
         std::cout<<"Error reading input file. Either blank or incorrect naming format. Input will be generated.\n";
         std::cout<<"Number of States:\n";
         getline(std::cin, value);
-        n = stoi(value);
+        n = std::stoi(value);
 
         std::cout<<"Number of Actions:\n";
         getline(std::cin, value);
-        m = stoi(value);
+        m = std::stoi(value);
 
         std::cout<<"Gamma:\n";
         getline(std::cin, value);
-        gamma = stod(value);
+        gamma = std::stod(value);
 
         inp = initialize(n,m,gamma);
         dataFile = getCurrentTime();
