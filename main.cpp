@@ -11,6 +11,7 @@
 #include <ctime>
 #include "Algorithm2.h"
 #include "Algo3.h"
+#include <iomanip>
 
 
 
@@ -18,7 +19,7 @@ int main() {
     srand(time(0));
 
     std::string dataFile, value;
-    double epsilon, delta, gamma;
+    long double epsilon, delta, gamma;
     int n,m;
     std::cout<<"Please enter input filename (or leave blank to generate input):\n";
     getline(std::cin, dataFile);
@@ -30,6 +31,14 @@ int main() {
     std::cout<<"Delta:\n";
     getline(std::cin, value);
     delta = std::stod(value);
+
+    std::cout<<"Gamma:\n";
+    getline(std::cin, value);
+    gamma = std::stod(value);
+
+
+    std::cout<<std::setprecision(16)<<1-gamma<<"\n";
+
 
 
     Inputs inp;
@@ -43,10 +52,6 @@ int main() {
         getline(std::cin, value);
         m = std::stoi(value);
 
-        std::cout<<"Gamma:\n";
-        getline(std::cin, value);
-        gamma = std::stod(value);
-
         inp = initialize(n,m,gamma);
         dataFile = getCurrentTime();
         dataFile = dataFile + " - data.csv";
@@ -54,7 +59,6 @@ int main() {
     }else{
         n = inp.N;
         m = inp.M;
-        gamma = inp.gamma;
     }
 
 

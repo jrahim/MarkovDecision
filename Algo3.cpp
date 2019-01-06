@@ -100,8 +100,10 @@ value_policy* Algo3::RandomizedVI(double *v0, int L, double epsilon, double delt
 
 value_policy* Algo3::HighPrecisionRandomVI(double epsilon, double delta) {
 
-    int K = (int) ceil(log2(M/(epsilon*(1-inputs.gamma))));
-    int L = (int) ceil(log2(4/(1-inputs.gamma)) * (1/(1-inputs.gamma)));
+    long K = ceil(log2(M/(epsilon*(1-inputs.gamma))));
+
+    long L = ceil(log2(4/(1-inputs.gamma)) * (1/(1-inputs.gamma)));
+    std::cout<<log2(4/(1-inputs.gamma)) * (1/(1-inputs.gamma))<<"\n";
     double * v0 = new double[n]();
     double epsilon0 = M/(1-inputs.gamma);
 
